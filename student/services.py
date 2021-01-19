@@ -11,9 +11,6 @@ def get_students(order, direction):
 
 
 def add_student(name, discipline, mark):
-    print(name)
-    print(discipline)
-    print(mark)
     student = Student.objects.filter(name=name,
                                      discipline=discipline)
     if student:
