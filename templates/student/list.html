@@ -1,0 +1,83 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    AAO
+{% endblock %}
+
+{% block content %}
+    {% if message %}
+        <div> {{ message }}</div>
+    {% endif %}
+    {% if students %}
+        <div>Add student: </div>
+        <hr>
+        <form action="{% url 'add' %}" method="post">
+            {% csrf_token %}
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name">
+            <br>
+            <label for="discipline">Discipline</label>
+            <input type="text" name="discipline" id="discipline">
+            <br>
+            <label for="mark">Mark</label>
+            <input type="number" name="mark" id="mark">
+            <br>
+            <input type="submit" value="Submit">
+            <hr>
+        </form>
+        <div>
+            or
+        </div>
+        <form action="{% url 'add_from_file' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="uploadFile" id="uploadFile">
+            <br>
+            <input type="submit" value="Submit">
+            <hr>
+        </form>
+        <table>
+            <thead>
+            <tr>
+                <th>
+                    <a href="{% url 'index' %}?order=name&direction={% if order.order == 'name' %}{% if order.direction == 'ASC' %}DESC{% else %}ASC{% endif %}{% endif %}">
+                        Name
+                    </a>
+                </th>
+                <th>
+                    <a href="{% url 'index' %}?order=discipline&direction={% if order.order == 'discipline' %}{% if order.direction == 'ASC' %}DESC{% else %}ASC{% endif %}{% endif %}">
+                        Discipline
+                    </a>
+                </th>
+                <th>
+                    <a href="{% url 'index' %}?order=mark&direction={% if order.order == 'mark' %}{% if order.direction == 'ASC' %}DESC{% else %}ASC{% endif %}{% endif %}">
+                        Mark
+                    </a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>
+                        {{ student.name }}
+                    </td>
+                    <td>
+                        {{ student.discipline }}
+                    </td>
+                    <td>
+                        {{ student.mark }}
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td>{{ marks_average }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+    {% else %}
+        No results.
+    {% endif %}
+{% endblock %}
